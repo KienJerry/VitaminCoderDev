@@ -1,0 +1,7 @@
+{
+    "version": 2,
+    "builds": [
+      { "src": "install.sh", "use": "@vercel/build-utils/build" },
+      { "src": "build.sh", "use": "@vercel/build-utils/build" }
+    ]
+  }
