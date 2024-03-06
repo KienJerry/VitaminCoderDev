@@ -42,14 +42,9 @@ export default function Home(props: any) {
 }
 
 export const getServerSideProps = wrapper.getServerSideProps(
-  (store) => async () => {
+  (store) => async (context: any) => {
+    await store.dispatch(getUserRequest());
     const reduxState = store.getState().Auth;
-    if (!(reduxState?.payload?.profile?.length > 0)) {
-      store.dispatch(getUserRequest());
-      await store.sagaTask.done;
-      const updatedReduxState = store.getState().Auth;
-      return { props: updatedReduxState };
-    }
-    return { props: reduxState };
+    return { props: { ...reduxState } };
   },
 );

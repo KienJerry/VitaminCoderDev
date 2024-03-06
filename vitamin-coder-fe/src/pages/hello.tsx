@@ -4,13 +4,13 @@ import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { wrapper } from "@/store";
-import actions from "@/store/auth/actions";
+import actions from "@/store/blog/actions";
 
 const { getUserRequest } = actions;
 
 export default function Home(props: any) {
   const [count, setCount] = useState(0);
-  const BlogSport = useSelector((state: any) => state?.Auth);
+  const BlogSport = useSelector((state: any) => state?.Blog);
   const test = useRef(1);
   const dispatch = useDispatch();
 
@@ -21,12 +21,12 @@ export default function Home(props: any) {
   console.log(props, "page Hello");
   console.log(BlogSport, "BlogSport Hello");
 
-  useEffect(() => {
-    if (!(BlogSport?.payload?.profile?.length > 0)){
-      console.log("first");
-      dispatch(getUserRequest());
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (!(BlogSport?.payload?.profile?.length > 0)){
+  //     console.log("first");
+  //     dispatch(getUserRequest());
+  //   }
+  // }, []);
 
   return (
     <>
@@ -49,11 +49,8 @@ export default function Home(props: any) {
 
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) => async () => {
-    // store.dispatch(getUserRequest());
-    // const reduxState = store.getState().Auth;
-    // if (!(reduxState?.payload?.profile > 0)) {
-    //   // await store.sagaTask.toPromise();
-    // }
-    // return { props: reduxState };
+    store.dispatch(getUserRequest());
+    const reduxState = store.getState().Blog;
+    return { props: reduxState };
   },
 );
