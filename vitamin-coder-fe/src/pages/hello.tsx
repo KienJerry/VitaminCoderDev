@@ -2,7 +2,6 @@ import Head from "next/head";
 import Link from "next/link";
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { END } from "redux-saga";
 
 import { wrapper } from "@/store";
 import actions from "@/store/auth/actions";
@@ -19,8 +18,15 @@ export default function Home(props: any) {
     test.current += 1;
     console.log(test.current);
   };
-  console.log(props, "page index");
-  console.log(BlogSport, "page index");
+  console.log(props, "page Hello");
+  console.log(BlogSport, "BlogSport Hello");
+
+  useEffect(() => {
+    if (!(BlogSport?.payload?.profile?.length > 0)){
+      console.log("first");
+      dispatch(getUserRequest());
+    }
+  }, []);
 
   return (
     <>
@@ -33,8 +39,8 @@ export default function Home(props: any) {
       <main>
         <p>{count}</p>
         <button onClick={() => handle()}>Count</button>
-        <Link href={"/hello"} style={{ height: "200rem", background: "red" }}>
-          Hello
+        <Link href={"/"} style={{ height: "200rem", background: "red" }}>
+          Index
         </Link>
       </main>
     </>
@@ -43,13 +49,11 @@ export default function Home(props: any) {
 
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) => async () => {
-    const reduxState = store.getState().Auth;
-    if (!(reduxState?.payload?.profile?.length > 0)) {
-      store.dispatch(getUserRequest());
-      await store.sagaTask.done;
-      const updatedReduxState = store.getState().Auth;
-      return { props: updatedReduxState };
-    }
-    return { props: reduxState };
+    // store.dispatch(getUserRequest());
+    // const reduxState = store.getState().Auth;
+    // if (!(reduxState?.payload?.profile > 0)) {
+    //   // await store.sagaTask.toPromise();
+    // }
+    // return { props: reduxState };
   },
 );
