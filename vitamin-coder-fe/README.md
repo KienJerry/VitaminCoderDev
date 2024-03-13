@@ -94,7 +94,7 @@ Note
 
 ### Requirements
 
-- NodeJS v20.11.1 or later
+- NodeJS v18.17.0 or later
 - NPM version 10.2.4
 
 ## Command Line

@@ -2,16 +2,15 @@ import Head from "next/head";
 import Link from "next/link";
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { END } from "redux-saga";
 
 import { wrapper } from "@/store";
-import actions from "@/store/auth/actions";
+import actions from "@/store/blog/actions";
 
 const { getUserRequest } = actions;
 
 export default function Home(props: any) {
   const [count, setCount] = useState(0);
-  const BlogSport = useSelector((state: any) => state?.Auth);
+  const BlogSport = useSelector((state: any) => state?.Blog);
   const test = useRef(1);
   const dispatch = useDispatch();
 
@@ -19,8 +18,15 @@ export default function Home(props: any) {
     test.current += 1;
     console.log(test.current);
   };
-  console.log(props, "page index");
-  console.log(BlogSport, "page index");
+  console.log(props, "page Hello");
+  console.log(BlogSport, "BlogSport Hello");
+
+  // useEffect(() => {
+  //   if (!(BlogSport?.payload?.profile?.length > 0)){
+  //     console.log("first");
+  //     dispatch(getUserRequest());
+  //   }
+  // }, []);
 
   return (
     <>
@@ -33,8 +39,8 @@ export default function Home(props: any) {
       <main>
         <p>{count}</p>
         <button onClick={() => handle()}>Count</button>
-        <Link href={"/hello"} style={{ height: "200rem", background: "red" }}>
-          Hello
+        <Link href={"/"} style={{ height: "200rem", background: "red" }}>
+          Index
         </Link>
       </main>
     </>
@@ -42,9 +48,9 @@ export default function Home(props: any) {
 }
 
 export const getServerSideProps = wrapper.getServerSideProps(
-  (store) => async (context: any) => {
-    await store.dispatch(getUserRequest());
-    const reduxState = store.getState().Auth;
-    return { props: { ...reduxState } };
+  (store) => async () => {
+    store.dispatch(getUserRequest());
+    const reduxState = store.getState().Blog;
+    return { props: reduxState };
   },
 );
